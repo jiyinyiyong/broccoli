@@ -1,0 +1,24 @@
+
+doctype 5
+html
+  head
+    title Blog
+    meta(charset="utf-8")
+    link(rel="stylesheet",href="page.css")
+    script(src="../components/seajs-2.0/dist/sea.js")
+    script(src="../components/lilyturf/page/lilyturf.js")
+    script(src="../components/my-scaffold/base.js")
+    script(src="../components/jquery/jquery.js")
+    script(src="../components/toastr/toastr.js")
+    link(rel="stylesheet", href="../components/my-scaffold/base.css")
+    link(rel="stylesheet", href="../components/toastr/toastr.css")
+    script(src="http://localhost:7777/doodle.js")
+    script!= 'seajs.use("./main.js")'
+  body
+    #menu
+      input#search
+      #login.button Login
+      #tags
+    #table
+    #popup
+      #paper

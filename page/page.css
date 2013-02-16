@@ -1,0 +1,36 @@
+body {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: -webkit-flex;
+  -webkit-flex-direction: row;
+}
+#menu {
+  width: 400px;
+  height: 100%;
+  padding: 100px 50px;
+}
+#menu #search {
+  width: 300px;
+  height: 30px;
+  font-size: 16px;
+  line-height: 30px;
+  padding: 0px 6px;
+}
+#table {
+  width: 800px;
+  height: 100%;
+}
+#popup {
+  position: absolute;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(38,64,47,0.6);
+}
+#popup #paper {
+  width: 900px;
+  height: 100%;
+  background: #fff;
+  margin: 0px auto;
+}

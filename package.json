@@ -1,0 +1,21 @@
+{
+  "name": "broccoli",
+  "version": "0.0.0",
+  "description": "my blog server",
+  "main": "app.coffee",
+  "scripts": {
+    "test": "node-dev app.coffee"
+  },
+  "repository": "",
+  "keywords": [
+    "blog"
+  ],
+  "author": "jiyinyiyong",
+  "license": "BSD",
+  "dependencies": {
+    "mongo-lite": "*",
+    "express": "*",
+    "time": "*",
+    "dateformat": "*"
+  }
+}
