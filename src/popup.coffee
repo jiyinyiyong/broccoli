@@ -3,62 +3,134 @@ define (require, exports) ->
 
   exports.elem = popup = $ "#popup"
   paper = $ "#paper"
-  login = $ "#login"
 
-  ajax = require "./ajax"
+  config = require "./config"
+  backend = require "./backend"
 
-  login.click ->
-    exports.auth()
+  marked.setOptions
+    gfm: yes
+    breaks: yes
+    sanitize: no
+
+  my =
+    new: -> @id = (new Date).getTime().toString()
+    data: {}
+  my.new()
+
+  exports.split_tags = split_tags = (str) ->
+    str.split(" ").filter (s) -> s[0]?
+
+  article_data = ->
+    data =
+      id: my.id
+      tags: split_tags paper.find(".tags").val()
+      title: paper.find(".title").val()
+      content: paper.find("textarea").val()
 
   article = (data) ->
     $ lilyturf.dom ->
       @div class: "article",
         @div class: "title", (@text data.title)
         @div class: "time", (@text data.time)
-        @div class: "content", (@text data.content)
+        @div class: "content",
+          @html (marked data.content)
+        @div class: "edit button", (@text "Edit")
 
   auth = ->
-    elem = lilyturf.dom ->
-      @input class: "password"
-
-    $(elem).keydown (e) ->
-      if e.keyCode in [13, 32]
-        password = $(elem).val() 
-        ajax.auth password
-        localStorage.setItem "password", password
-
-    button = lilyturf.dom ->
-      @div class: "button", (@text "submit")
-
-    $(button).click ->
-
     $ lilyturf.dom ->
       @div class: "auth",
-        elem,
-        @div class: "button submit",
+        @input class: "password", type: "password"
 
   editor = (data) ->
+    tags = if data.tags? then data.tags.join " " else ""
+
     $ lilyturf.dom ->
-      @div class: "editor",
-        @input class: "title"
-        @textarea class: "content"
-        @button class: "save", (@text "save")
+      @div class: "editor vertical-list",
+        @input class: "tags", value: tags
+        @input class: "title", value: (data.title or "")
+        @textarea class: "content",
+          @text (data.content or "")
+        @div class: "control horizontal",
+          @div class: "save button", (@text "Save")
+          @div class: "preview button", (@text "Preview")
+          @div class: "remove button", (@text "Remove")
+          @div class: "exit button", (@text "Exit")
+
+  preview = (data) ->
+    $ lilyturf.dom ->
+      @div class: "preview article vertical-list",
+        @div class: "tags", (@text (data.tags.join " "))
+        @div class: "title", (@text data.title)
+        @div class: "content",
+          @html (marked data.content)
+        @div class: "control horizontal",
+          @div class: "save button", (@text "Save")
+          @div class: "edit button", (@text "Edit")
+
+  reader = (data) ->
+    link = "/blog/#{data.id}"
+    $ lilyturf.dom ->
+      @div class: "reader article vertical-list",
+        @div class: "tags", (@text (data.tags.join " "))
+        @div class: "title", (@text data.title)
+        @div class: "time", (@text data.time)
+        @div class: "link",
+          @a href: link, target: "_blank",
+            @text "direct link"
+        @div class: "content",
+          @html (marked data.content)
+        @div class: "control horizontal",
+          @div class: "edit button", (@text "Edit")
 
   exports.article = (data) ->
-    popup.fadeIn()
-    ajax.fetch data, (item) ->
+    exports.show()
+    backend.fetch data, (item) ->
       data.content = item.content
       data.time = item.time
       paper.empty().append (article data)
 
   exports.auth = ->
-    popup.fadeIn()
+    exports.show()
     paper.empty().append auth()
+    paper.find("input").focus().keydown (e) ->
+      if e.keyCode in [13, 32]
+        password = $(@).val() 
+        backend.auth password
+        localStorage.setItem "password", password
 
-  exports.editor = (data) ->
-    popup.fadeIn()
-    ajax.fetch data, (item) ->
+  exports.reader = (data) ->
+    my.id = data.id
+    exports.show()
+    backend.fetch data, (item) ->
       data.content = item.content
-      paper.empty().append (editor data)
+      data.time = item.time
+      # log "editor:", data, item
+      paper.empty().append (reader data)
+      paper.find(".edit").click ->
+        exports.edit data
+
+  exports.create = ->
+    exports.show()
+    my.new()
+    exports.edit {}
+
+  exports.preview = ->
+    data = article_data()
+    my.data = data
+    paper.empty().append (preview data)
+    paper.find(".edit").click -> exports.edit data
+    paper.find(".save").click -> backend.update data
+
+  exports.edit = (data) ->
+    paper.empty().append (editor data)
+    paper.find(".tags").focus()
+    paper.find(".save").click -> backend.update article_data()
+    paper.find(".preview").click -> exports.preview()
+    paper.find(".exit").click -> exports.hide()
+    paper.find(".remove").click ->
+      backend.remove data, -> exports.hide()
+
+  exports.show = -> popup.fadeIn config.fadeIn_duration
+  exports.hide = -> popup.fadeOut config.fadeOut_duration
 
   exports

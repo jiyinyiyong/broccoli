@@ -2,6 +2,7 @@
   "name": "broccoli",
   "version": "0.0.1",
   "dependencies": {
+    "marked": "*",
     "toastr": "*",
     "jquery": "*",
     "seajs-2.0": "*",

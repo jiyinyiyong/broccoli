@@ -1,8 +1,11 @@
 
-db = require("mongo-lite").connect "mongodb://localhost:27017/blog-server"
+db = require("mongo-lite").connect "mongodb://localhost:27017/broccoli"
 
 index = db.collection "index"
 content = db.collection "content"
+
+log = console.log
+
 ###
 
 seach data =
@@ -26,23 +29,58 @@ make =
     now.setTimezone "Asia/Shanghai"
     format now, "yyyy-mm-dd hh:MM"
 
-exports.index = {}
-exports.content = {}
+exports.create = (data, call) ->
+  index_data =
+    id: data.id
+    title: data.title
+    tags: data.tags
+  content_data =
+    id: data.id
+    content: data.content
+    time: make.time()
 
-exports.index.add = (data, call) -> index.insert data, call
-exports.index.drop = (data, call) ->
-  if data.id? then index.remove {id: data.id}, call
-  else call (new Error "no id"), []
-exports.index.update = (data, call) ->
-  if data.id? then index.update {id: data.id}, data, call
-  else call (new Error "no id"), []
+  index.insert index_data, (err1, doc1) ->
+    content.insert content_data, (err2, doc2) ->
+      call err2, doc2 if call?
 
-exports.content.add = (data, call) ->
-  data.time = make.time()
-  content.insert data, call
-exports.content.drop = (data, call) ->
-  if data.id? then content.remove {id: data.id}, call
-  else call (new Error "no id"), []
-exports.index.update = (data, call) ->
-  if data.id? then content.update {id: data.id}, data, call
-  else call (new Error "no id"), []
+exports.update = (data, call) ->
+  log "update", data
+  index_data =
+    id: data.id
+    title: data.title
+    tags: data.tags
+  content_data =
+    id: data.id
+    content: data.content
+    time: make.time()
+  query = id: data.id
+
+  index.update query, index_data, upsert: yes, (err1, doc1) ->
+    content.update query, content_data, upsert: yes, (err2, doc2) ->
+      call err2, doc2 is call?
+
+exports.get_index = (call) ->
+  index.all {}, {_id: 0}, (err, docs) -> call docs
+
+exports.fetch = (data, call) ->
+  query =
+    id: data.id
+  log "doing fetch"
+  content.first query, (err, docs) ->
+    log "fetched docs:", docs
+    call docs
+
+exports.remove = (data, call) ->
+  query =
+    id: data.id
+  index.remove query, (err, docs) ->
+    content.remove query, (err2, docs2) ->
+      call()
+
+exports.one = (query, call) ->
+  index.first query, (err, data) ->
+    content.first query, (err, json) ->
+      # log data, json, err
+      data.time = json.time
+      data.content = json.content
+      call data

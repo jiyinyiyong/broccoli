@@ -1,0 +1,25 @@
+.article {
+  line-height: 26px;
+}
+.article .tags {
+  font-size: 14px;
+  font-family: Monaco, monospace, "wenqunyi micro hei mono";
+}
+.article .title {
+  font-family: "wenqunyi micro hei";
+font-size
+}
+.article .time {
+  color: #e6e6e6;
+  font-size: 13px;
+}
+.article .content {
+  margin: 80px 0px;
+}
+.article .content p {
+  margin: 20px 0px;
+}
+.article .content code,
+.article .content pre {
+  background: #e3e6e8;
+}

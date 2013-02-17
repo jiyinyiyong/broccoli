@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Blog</title>
+    <title>Broccoli</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="page.css">
     <script src="../components/seajs-2.0/dist/sea.js"></script>
     <script src="../components/lilyturf/page/lilyturf.js"></script>
     <script src="../components/my-scaffold/base.js"></script>
     <script src="../components/jquery/jquery.js"></script>
     <script src="../components/toastr/toastr.js"></script>
+    <script src="../components/marked/lib/marked.js"></script>
     <link rel="stylesheet" href="../components/my-scaffold/base.css">
     <link rel="stylesheet" href="../components/toastr/toastr.css">
+    <link rel="stylesheet" href="page.css">
+    <link rel="stylesheet" href="article.css">
     <script src="http://localhost:7777/doodle.js"></script>
     <script>seajs.use("./main.js")</script>
   </head>
   <body>
-    <div id="menu">
+    <div id="menu" class="vertical-list">
       <input id="search">
       <div id="login" class="button">Login</div>
+      <div id="create" class="button">Create</div>
       <div id="tags"></div>
     </div>
     <div id="table"></div>

@@ -13,6 +13,8 @@
   "author": "jiyinyiyong",
   "license": "BSD",
   "dependencies": {
+    "dot": "*",
+    "marked": "*",
     "mongo-lite": "*",
     "express": "*",
     "time": "*",

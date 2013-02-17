@@ -13,7 +13,7 @@ queue = [
   "jade -O #{d}/page/ -wP #{d}/src/"
   "coffee -o #{d}/page/ -wbc #{d}/src/"
   "stylus -o #{d}/page/ -w #{d}/src/"
-  "doodle #{d}/page/"
+  "doodle #{d}/page/ #{d}/app.coffee #{d}/server/"
   "node-dev #{d}/app.coffee"
 ]
 
