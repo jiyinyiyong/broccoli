@@ -1,5 +1,6 @@
 
 db = require("mongo-lite").connect "mongodb://localhost:27017/broccoli"
+db.log = null
 
 index = db.collection "index"
 content = db.collection "content"

@@ -173,7 +173,9 @@ define(function(require, exports) {
     return popup.fadeIn(config.fadeIn_duration);
   };
   exports.hide = function() {
-    return popup.fadeOut(config.fadeOut_duration);
+    return popup.fadeOut(config.fadeOut_duration, function() {
+      return $("#search").focus();
+    });
   };
   return exports;
 });

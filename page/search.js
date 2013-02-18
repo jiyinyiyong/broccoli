@@ -11,7 +11,8 @@ define(function(require, exports) {
     data: [],
     update: function() {
       return backend.get_index(function(json) {
-        return index.data = json;
+        index.data = json;
+        return exports.search([]);
       });
     }
   };

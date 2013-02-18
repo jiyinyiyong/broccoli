@@ -11,6 +11,7 @@ define (require, exports) ->
     update: ->
       backend.get_index (json) ->
         index.data = json
+        exports.search []
         # log "index data:", index.data
   index.update()
 

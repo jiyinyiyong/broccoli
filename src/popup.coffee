@@ -117,6 +117,8 @@ define (require, exports) ->
       backend.remove data, -> exports.hide()
 
   exports.show = -> popup.fadeIn config.fadeIn_duration
-  exports.hide = -> popup.fadeOut config.fadeOut_duration
+  exports.hide = ->
+    popup.fadeOut config.fadeOut_duration, ->
+      $("#search").focus()
 
   exports
