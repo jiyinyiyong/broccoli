@@ -17,8 +17,8 @@ define (require, exports) ->
   card = (data) ->
     $ lilyturf.dom ->
       @div class: "card",
+        @div class: "tags horizontal"
         @div class: "title button", (@text data.title)
-        @div class: "tags"
 
   render_card = (data) ->
     elem = card data
@@ -46,5 +46,7 @@ define (require, exports) ->
     table.empty()
     # log "result", result, index.data
     result.forEach render_card
+
+  exports.update = -> index.update()
 
   exports

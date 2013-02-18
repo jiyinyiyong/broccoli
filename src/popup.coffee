@@ -27,15 +27,6 @@ define (require, exports) ->
       title: paper.find(".title").val()
       content: paper.find("textarea").val()
 
-  article = (data) ->
-    $ lilyturf.dom ->
-      @div class: "article",
-        @div class: "title", (@text data.title)
-        @div class: "time", (@text data.time)
-        @div class: "content",
-          @html (marked data.content)
-        @div class: "edit button", (@text "Edit")
-
   auth = ->
     $ lilyturf.dom ->
       @div class: "auth",
@@ -59,35 +50,28 @@ define (require, exports) ->
   preview = (data) ->
     $ lilyturf.dom ->
       @div class: "preview article vertical-list",
-        @div class: "tags", (@text (data.tags.join " "))
+        @code class: "tags", (@text (data.tags.join " "))
         @div class: "title", (@text data.title)
         @div class: "content",
           @html (marked data.content)
         @div class: "control horizontal",
-          @div class: "save button", (@text "Save")
+          # @div class: "save button", (@text "Save")
           @div class: "edit button", (@text "Edit")
 
   reader = (data) ->
     link = "/blog/#{data.id}"
     $ lilyturf.dom ->
       @div class: "reader article vertical-list",
-        @div class: "tags", (@text (data.tags.join " "))
+        @code class: "tags", (@text (data.tags.join " "))
         @div class: "title", (@text data.title)
-        @div class: "time", (@text data.time)
-        @div class: "link",
+        @div class: "line",
+          @code class: "time", (@text data.time)
           @a href: link, target: "_blank",
             @text "direct link"
         @div class: "content",
           @html (marked data.content)
         @div class: "control horizontal",
           @div class: "edit button", (@text "Edit")
-
-  exports.article = (data) ->
-    exports.show()
-    backend.fetch data, (item) ->
-      data.content = item.content
-      data.time = item.time
-      paper.empty().append (article data)
 
   exports.auth = ->
     exports.show()
@@ -102,7 +86,7 @@ define (require, exports) ->
     my.id = data.id
     exports.show()
     backend.fetch data, (item) ->
-      data.content = item.content
+      data.content = item.content or ""
       data.time = item.time
       # log "editor:", data, item
       paper.empty().append (reader data)
@@ -119,12 +103,14 @@ define (require, exports) ->
     my.data = data
     paper.empty().append (preview data)
     paper.find(".edit").click -> exports.edit data
-    paper.find(".save").click -> backend.update data
+    # paper.find(".save").click -> backend.update data
 
   exports.edit = (data) ->
     paper.empty().append (editor data)
     paper.find(".tags").focus()
-    paper.find(".save").click -> backend.update article_data()
+    paper.find(".save").click ->
+      backend.update article_data()
+      exports.preview()  
     paper.find(".preview").click -> exports.preview()
     paper.find(".exit").click -> exports.hide()
     paper.find(".remove").click ->

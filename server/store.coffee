@@ -44,7 +44,7 @@ exports.create = (data, call) ->
       call err2, doc2 if call?
 
 exports.update = (data, call) ->
-  log "update", data
+  # log "update", data
   index_data =
     id: data.id
     title: data.title
@@ -65,9 +65,9 @@ exports.get_index = (call) ->
 exports.fetch = (data, call) ->
   query =
     id: data.id
-  log "doing fetch"
+  # log "doing fetch"
   content.first query, (err, docs) ->
-    log "fetched docs:", docs
+    # log "fetched docs:", docs
     call docs
 
 exports.remove = (data, call) ->
@@ -79,8 +79,12 @@ exports.remove = (data, call) ->
 
 exports.one = (query, call) ->
   index.first query, (err, data) ->
-    content.first query, (err, json) ->
-      # log data, json, err
-      data.time = json.time
-      data.content = json.content
-      call data
+    if data?
+      content.first query, (err, json) ->
+        if json
+          # log data, json, err
+          data.time = json.time
+          data.content = json.content
+          call data
+        else call null
+    else call null

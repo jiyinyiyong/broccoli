@@ -21,10 +21,10 @@ define(function(require, exports) {
       return this.div({
         "class": "card"
       }, this.div({
+        "class": "tags horizontal"
+      }), this.div({
         "class": "title button"
-      }, this.text(data.title)), this.div({
-        "class": "tags"
-      }));
+      }, this.text(data.title)));
     }));
   };
   render_card = function(data) {
@@ -71,6 +71,9 @@ define(function(require, exports) {
     });
     table.empty();
     return result.forEach(render_card);
+  };
+  exports.update = function() {
+    return index.update();
   };
   return exports;
 });

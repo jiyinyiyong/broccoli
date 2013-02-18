@@ -7,6 +7,7 @@ body {
   width: 100%;
   display: -webkit-flex;
   -webkit-flex-direction: row;
+  font-family: Marcellus, "wenquanyi micro hei";
 }
 #menu {
   width: 400px;
@@ -19,6 +20,7 @@ body {
 #table {
   width: 800px;
   height: 100%;
+  overflow-y: scroll;
 }
 #table .card {
   padding: 20px 40px;
@@ -30,6 +32,10 @@ body {
 #table .card .tags .tag {
   width: auto;
   padding: 0px 8px;
+  color: #7575f0;
+}
+#table .card>* {
+  margin: 4px 0px;
 }
 #popup {
   position: absolute;
@@ -44,7 +50,8 @@ body {
   height: 100%;
   background: #fff;
   margin: 0px auto;
-  padding: 20px;
+  padding: 30px 20px 200px;
+  overflow-y: scroll;
 }
 #popup #paper .auth {
   padding: 40px;
@@ -58,7 +65,8 @@ input {
 }
 textarea {
   box-shadow: 0 0 3px #b88114;
-  min-height: 100px;
+  min-height: 300px;
+  height: auto;
 }
 .button {
   display: inline-block;
@@ -68,7 +76,7 @@ textarea {
   line-height: 30px;
   font-size: 15px;
   text-align: center;
-  background: #f3f3f7;
+  background: #fbf5da;
   border-radius: 3px;
 }
 .vertical-list {

@@ -4,6 +4,7 @@ define (require, exports) ->
   {success, warn, info, error} = require "./notify"
   popup = require "./popup"
   config = require "./config"
+  search = require "./search"
 
   exports.auth = (password) ->
     $.post "/auth", {password}, (result) ->
@@ -22,12 +23,6 @@ define (require, exports) ->
     data.password = password
     $.post "/fetch", data, call
 
-  exports.remove = (data, call) ->
-    data.password = password
-    $.post "/remove", data, (result) ->
-      if result.auth then success "Removed", ""
-      else error "Failed", "maybe for password"
-
   exports.update = (data, call) ->
     data.password = password
     # log data
@@ -37,7 +32,9 @@ define (require, exports) ->
       error "Bad article", "too few words here"
     else 
       $.post "/update", data, (result) ->
-        if result.auth then success "Updated", "blog is ok"
+        if result.auth
+          search.update()
+          success "Updated", "blog is ok"
         else error "Failed", "failed to update"
 
   exports.get_index = (call) ->
@@ -47,6 +44,7 @@ define (require, exports) ->
     data.password = password
     $.post "/remove", data, (result) ->
       if result.auth
+        search.update()
         success "Got response", "Should be fine"
         call()
       else error "Failed", "need to login"
