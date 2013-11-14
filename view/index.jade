@@ -1,0 +1,20 @@
+
+doctype 5
+html
+  head
+    title Broccoli
+    meta(charset="utf8")
+    link(rel="stylesheet", href="")
+    link(rel="stylesheet", href="style/style.css")
+    if (developing)
+      script(
+        src="/bower/requirejs/require.js"
+        data-main="/client/dev-main"
+        )
+    else
+      script(
+        src="/bower/requirejs/require.js"
+        data-main="/client/deploy-main"
+        )
+  body
+    #container
