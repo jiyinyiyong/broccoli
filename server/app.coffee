@@ -19,6 +19,7 @@ app.get "/", (req, res) ->
     if err?
       res.json 500, {info: err.toString()}
     else
+      delete docs.pass
       res.json 200, docs
 
 app.post "/", (req, res) ->

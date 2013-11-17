@@ -6,27 +6,13 @@ define (require, exports) ->
 
   ajax = require "client/ajax"
   db = "http://broccoli.blog/"
+  db = "http://broccoli.jiyinyiyong.info/"
 
   Ractive = require "Ractive"
   marked = require "marked"
   marked.setOptions
     breaks: yes
     gfm: yes
-
-  database = {}
-  try
-    database = JSON.parse (localStorage.getItem "database")
-    database or= {}
-  window.addEventListener "beforeunload", ->
-    localStorage.setItem "database", (JSON.stringify (database or {}))
-
-  ajax.get db,
-    (data) ->
-      database = data.data
-      database or= {}
-      table.set "list", data.data
-    ->
-      console.log "fail"
 
   layout = new Ractive
     el: '#app'
@@ -43,7 +29,7 @@ define (require, exports) ->
     el: '#table'
     template: tableTmpl
     data:
-      list: database
+      list: {}
 
   article = new Ractive
     el: '#article'
@@ -87,9 +73,8 @@ define (require, exports) ->
       content: data.content
       time: (new Date).getTime()
       id: data.id
-    if aPost.title.length >= 0
+    if aPost.title.length > 0
       table.set "list.#{aPost.id}", aPost
-      database[aPost.id] = aPost
       layout.set "modified", yes
 
   table.on "open", (event) ->
@@ -113,26 +98,45 @@ define (require, exports) ->
   article.on "delete", (event) ->
     id = article.get("id")
     table.set "list.#{id}", undefined
-    delete database[id]
     layout.set "inTable", yes
 
   table.observe "query", (newValue) ->
     words = newValue.split(" ")
-    Object.keys(database).map (id) ->
+    data = table.get "list"
+    Object.keys(data).map (id) ->
       show = words.every (word) ->
         word = word.toLowerCase()
-        title = database[id].title.toLowerCase()
+        title = data[id].title.toLowerCase()
         title.indexOf(word) >= 0
       table.set "list.#{id}.hide", (if show then "" else "hide")
 
   layout.on "sync", (event) ->
     data =
-      data: {}
+      data: exportList (table.get "list")
       pass: window.pass or "wrong"
       user: "jiyinyiyong"
-    console.log "posting", data, database
+    console.log "data:", data
     ajax.post db, data,
       ->
         layout.set "modified", no
       ->
         alert "update failed"
+
+  try do ->
+    data = JSON.parse (localStorage.getItem "database")
+    # table.set "list", data
+  window.addEventListener "beforeunload", ->
+    data = exportList table.get('list')
+    localStorage.setItem "database", data
+
+  exportList = (list) ->
+    data = {}
+    for key, value of list
+      data[key] = value
+    data
+
+  ajax.get db,
+    (data) ->
+      table.set "list", data.data
+    ->
+      console.log "fail"
