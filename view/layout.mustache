@@ -1,5 +1,8 @@
 
 <div id="nav">
+  {{#modified}}
+    <span class="button" on-tap="sync">Sync</span>
+  {{/modified}}
   {{^inTable}}
     <span class="button" on-tap="back">Back</span>
   {{/inTable}}

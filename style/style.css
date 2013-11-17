@@ -17,16 +17,15 @@ input, textarea {
     outline: none;
     display: inline-block;
     transition-duration: 200ms;
+    box-shadow: 0 0 1px hsl(0, 0%, 78%);
 }
 
 textarea {
-    box-shadow: 0 0 4px gray;
     height: 100%;
 }
 
 * {
     box-sizing: border-box;
-    box-shadow: 0 0 1px 1px hsl(0, 0%, 98%);
 }
 
 #app {
@@ -41,15 +40,21 @@ textarea {
 
 #view {
     display: -webkit-flex;
+    position: relative;
+    -webkit-perspective: 500;
+    min-height: 400px;
 }
 
 #view > div {
     width: 100%;
     transition-duration: 300ms;
+    position: absolute;
+    -webkit-transform-origin: right center;
 }
 #view > .hide {
-    width: 0%;
-    overflow: hidden;
+    -webkit-transform: rotateY(-30deg);
+    pointer-events: none;
+    opacity: 0;
 }
 #view > div > * {
     min-width: 600px;
@@ -59,8 +64,33 @@ textarea {
     padding: 0 0 170px;
 }
 
-#table .results {}
-#table .title {}
+#table .results {
+    display: flex;
+    flex-flow: column;
+    flex-direction: column-reverse;
+}
+#table .title {
+    line-height: 40px;
+    font-size: 22px;
+    cursor: pointer;
+    transition-duration: 300ms;
+    box-shadow: 0 1px 0 hsl(0, 100%, 100%);
+    overflow: hidden;
+    transition-duration: 300ms;
+    height: 40px;
+    opacity: 1;
+}
+#table .title.hide {
+    height: 0;
+    opacity: 0;
+}
+#table .title:hover {
+    padding-left: 40px;
+    box-shadow: 0 1px 0 hsl(0, 0%, 62%);
+}
+#table .title:first-letter {
+    text-transform: capitalize;
+}
 
 #query {
     width: 80%;

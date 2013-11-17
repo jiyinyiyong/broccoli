@@ -6,7 +6,7 @@
   {{^editing}}
     <span class="button" on-tap="edit">Edit</span>
   {{/editing}}
-    <span class="time">Last at: {{ time }}</span>
+    <span class="time">Last at: {{ showTime(time) }}</span>
 </div>
 <div class="title {{ hideEditor(editing) }}">
   <input value="{{ title }}" placeholder="Write Title">
@@ -16,3 +16,9 @@
   <textarea placeholder="Write Content" value="{{ content }}"></textarea>
 </div>
 <div class="content">{{{ markup(content) }}}</div>
+<div class="more">
+  <span class="button" on-tap="more">More</span>
+  {{#more}}
+    <span class="button" on-tap="delete">Delete</span>
+  {{/more}}
+</div>

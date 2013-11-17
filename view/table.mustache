@@ -1,10 +1,10 @@
 
 <div id="entry">
   <span id="post" class="button" on-tap="post">Post</span>
-  <input id="query" placeholder="Type to Search">
+  <input id="query" placeholder="Type to Search" value="{{ query }}">
 </div>
 <div class="results">
   {{#list : num}}
-    <div class="title">{{title}}</div>
+    <div class="title {{ hide }}" on-tap="open">{{ title }}</div>
   {{/list}}
 </div>
