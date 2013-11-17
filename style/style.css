@@ -1,1 +1,111 @@
 
+body {
+    margin: 0;
+}
+
+body, input, textarea {
+    font-size: 20px;
+    line-height: 34px;
+    font-family: Optima;
+    padding: 0;
+}
+
+input, textarea {
+    background: transparent;
+    width: 100%;
+    border: none;
+    outline: none;
+    display: inline-block;
+    transition-duration: 200ms;
+}
+
+textarea {
+    box-shadow: 0 0 4px gray;
+    height: 100%;
+}
+
+* {
+    box-sizing: border-box;
+    box-shadow: 0 0 1px 1px hsl(0, 0%, 98%);
+}
+
+#app {
+    top: 0;
+    width: 80%;
+    margin: auto;
+}
+
+#nav {
+    height: 60px;
+}
+
+#view {
+    display: -webkit-flex;
+}
+
+#view > div {
+    width: 100%;
+    transition-duration: 300ms;
+}
+#view > .hide {
+    width: 0%;
+    overflow: hidden;
+}
+#view > div > * {
+    min-width: 600px;
+}
+
+#table {
+    padding: 0 0 170px;
+}
+
+#table .results {}
+#table .title {}
+
+#query {
+    width: 80%;
+}
+#post {
+}
+#post:hover {
+    box-shadow: 1px 1px 2px 2px hsl(0, 20%, 88%);
+}
+#post:active {}
+
+#article {
+}
+
+#article .title {
+    height: 40px;
+}
+#article .title:first-letter {
+    text-transform: capitalize;
+}
+#article .content {
+    height: 220px;
+}
+
+#article > div {
+    transition-duration: 400ms;
+    transition-timing-function: ease-in;
+}
+#article > .hide {
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+}
+
+.button {
+    min-width: 80px;
+    display: inline-block;
+    text-align: center;
+    background-color: hsl(240, 91%, 86%);
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 0 4px hsl(262, 27%, 54%);
+    cursor: pointer;
+}
+.button:hover {}
+.button:active {
+    background-color: hsl(240, 81%, 93%);
+}

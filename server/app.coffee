@@ -1,5 +1,2 @@
 
-console.log "starting server"
-
-require "./static"
-require "./socket"
+console.log "loading...."

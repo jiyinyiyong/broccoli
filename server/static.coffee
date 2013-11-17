@@ -10,7 +10,7 @@ rootTo = (dest) ->
 console.log __dirname
 
 app.configure ->
-  app.set "views", (rootTo "view")
+  app.set "views", (rootTo ".")
   app.set 'view engine', 'jade'
   app.use app.router
 

@@ -16,8 +16,7 @@
   "author": "jiyinyiyong",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "mongo-lite": "~0.3.2",
-    "express": "~3.4.4"
+    "mongo-lite": "~0.3.2"
   },
   "devDependencies": {
     "calabash": "~0.1.0"

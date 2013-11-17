@@ -1,4 +1,3 @@
 
 exports.config =
-  dev: yes
-  port: 3000
+  port: 8080

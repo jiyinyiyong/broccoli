@@ -1,0 +1,10 @@
+
+<div id="nav">
+  {{^inTable}}
+    <span class="button" on-tap="back">Back</span>
+  {{/inTable}}
+</div>
+<div id="view">
+  <div id="table" class="{{ showTable(inTable) }}"></div>
+  <div id="article" class="{{ showArticle(inTable) }}"></div>
+</div>

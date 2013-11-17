@@ -1,0 +1,18 @@
+
+<div>
+  {{#editing}}
+    <span class="button" on-tap="save">Save</span>
+  {{/editing}}
+  {{^editing}}
+    <span class="button" on-tap="edit">Edit</span>
+  {{/editing}}
+    <span class="time">Last at: {{ time }}</span>
+</div>
+<div class="title {{ hideEditor(editing) }}">
+  <input value="{{ title }}" placeholder="Write Title">
+</div>
+<div class="title {{ hidePreview(editing) }}">{{ title }}</div>
+<div class="content {{ hideEditor(editing) }}">
+  <textarea placeholder="Write Content" value="{{ content }}"></textarea>
+</div>
+<div class="content">{{{ markup(content) }}}</div>
