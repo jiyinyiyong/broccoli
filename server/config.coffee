@@ -1,3 +1,3 @@
 
-exports.config =
-  port: 8080
+exports.port = 3000
+exports.db = 'mongodb://localhost/broccoli'

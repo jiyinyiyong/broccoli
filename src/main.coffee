@@ -4,6 +4,9 @@ define (require, exports) ->
   articleTmpl = require "text!view/article.mustache"
   tableTmpl = require "text!view/table.mustache"
 
+  ajax = require "client/ajax"
+  db = "http://broccoli.blog/"
+
   Ractive = require "Ractive"
   marked = require "marked"
   marked.setOptions
@@ -13,9 +16,17 @@ define (require, exports) ->
   database = {}
   try
     database = JSON.parse (localStorage.getItem "database")
+    database or= {}
   window.addEventListener "beforeunload", ->
-    localStorage.setItem "database", (JSON.stringify database)
+    localStorage.setItem "database", (JSON.stringify (database or {}))
 
+  ajax.get db,
+    (data) ->
+      database = data.data
+      database or= {}
+      table.set "list", data.data
+    ->
+      console.log "fail"
 
   layout = new Ractive
     el: '#app'
@@ -76,8 +87,9 @@ define (require, exports) ->
       content: data.content
       time: (new Date).getTime()
       id: data.id
-    if post.title.length >= 9
+    if aPost.title.length >= 0
       table.set "list.#{aPost.id}", aPost
+      database[aPost.id] = aPost
       layout.set "modified", yes
 
   table.on "open", (event) ->
@@ -112,3 +124,15 @@ define (require, exports) ->
         title = database[id].title.toLowerCase()
         title.indexOf(word) >= 0
       table.set "list.#{id}.hide", (if show then "" else "hide")
+
+  layout.on "sync", (event) ->
+    data =
+      data: {}
+      pass: window.pass or "wrong"
+      user: "jiyinyiyong"
+    console.log "posting", data, database
+    ajax.post db, data,
+      ->
+        layout.set "modified", no
+      ->
+        alert "update failed"
